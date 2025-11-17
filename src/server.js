@@ -41,6 +41,23 @@ const init = async () => {
     },
   ]);
 
+  server.ext('onPreResponse', (request, h) => {
+    const { response } = request;
+
+    if (response instanceof Error) {
+      const newResponse = h.response({
+        status: 'fail',
+        message: response.message,
+      });
+      newResponse.code(response.statusCode);
+      return newResponse;
+    }
+
+    if (response.isBoom && response.isServer) console.error(response);
+
+    return h.continue;
+  });
+
   //mendeifinisikan strategy autentikasi jwt
 
   server.auth.strategy('notesapp_jwt', 'jwt', {

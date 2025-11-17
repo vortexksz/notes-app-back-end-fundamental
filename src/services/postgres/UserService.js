@@ -18,7 +18,7 @@ class UserService {
 
         const query = {
             text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id',
-            values: [id, username, hashedPassword, fullname],
+            values: [id, username, fullname, hashedPassword],
         };
 
         const result = await this._pool.query(query);
@@ -39,7 +39,7 @@ class UserService {
         const result = await this._pool.query(query);
 
         if(result.rows.length > 0){
-            throw new InvariantError('Gagal menambahkan user. Username sudah digunakan.');
+            throw new InvariantError('Gagal menambahkan user, Username sudah digunakan');
         }
     }
 

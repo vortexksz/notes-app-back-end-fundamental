@@ -18,7 +18,7 @@ class UserService {
 
         const query = {
             text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id',
-            values: [id, username, fullname, hashedPassword],
+            values: [id, username, hashedPassword, fullname],
         };
 
         const result = await this._pool.query(query);
@@ -67,7 +67,7 @@ class UserService {
         const result = await this._pool.query(query);
 
         if (!result.rows.length) {
-            throw new AuthenticationError('Kredensial yang Anda berikan salah ');
+            throw new AuthenticationError('Kredensial yang anda berikan salah ');
         }
 
         const { id, password: hashedPassword } = result.rows[0];

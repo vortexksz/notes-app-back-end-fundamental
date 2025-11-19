@@ -75,7 +75,7 @@ class UserService {
         const match = await bcrypt.compare(password, hashedPassword);
 
         if(!match) {
-            throw new AuthenticationError('Kredensial yang Anda berikan salah');
+            throw new AuthenticationError('Kredensial yang anda berikan salah');
         }
 
         return id;

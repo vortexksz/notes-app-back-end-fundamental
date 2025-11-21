@@ -20,6 +20,6 @@ exports.down = (pgm) => {
   // mengubah nilai owner old_notes pada note menjadi NULL
   pgm.sql("UPDATE notes SET owner = NULL WHERE owner = 'old_notes'");
 
-  // menghapus user baru.
+  // menghapus user baru
   pgm.sql("DELETE FROM users WHERE id = 'old_notes'");
 };

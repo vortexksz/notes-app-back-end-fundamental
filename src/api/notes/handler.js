@@ -55,7 +55,7 @@ class NoteHandler {
 
   }
 
-  async getNotesHandler() {
+  async getNotesHandler(request, h) {
     const { id: credentialId } = request.auth.credentials;
     const notes = await this._service.getNotes(credentialId);
     return {
@@ -68,26 +68,25 @@ class NoteHandler {
   }
 
   async getNoteByIdHandler(request, h) {
-
-    try{
+    try {
       const { id } = request.params;
       const { id: credentialId } = request.auth.credentials;
 
-      await this._service.verifyNoteOwner(id, credentialId);
+      await this._service.verifyNoteAccess(id, credentialId);
       const note = await this._service.getNoteById(id);
-      return {
+      const response = h.response({
         status: 'success',
         data: {
-        note,
+          note,
         },
-      }
-
-
+      });
+      response.code(200);
+      return response;
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-         status: 'fail',
-         message: error.message,
+          status: 'fail',
+          message: error.message,
         });
         response.code(error.statusCode);
         return response;
@@ -101,7 +100,6 @@ class NoteHandler {
       console.error(error);
       return response;
     }
-
   }
 
   async putNoteByIdHandler(request, h) {
